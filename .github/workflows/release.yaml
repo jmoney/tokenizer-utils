@@ -26,6 +26,7 @@ jobs:
         -
             name: Move library
             run:
+                go mod download
                 mv ./libtokenizers.a /go/pkg/mod/github.com/daulet/tokenizers@${VERSION}/libtokenizers.a
         -
             name: Run GoReleaser
