@@ -24,11 +24,11 @@ jobs:
         -
             name: Download libtokenizers
             run:
-                curl -fsSL "https://github.com/daulet/tokenizers/releases/latest/download/libtokenizers.darwin-arm64.tar.gz" | tar xvz
+                curl -fsSL "https://github.com/daulet/tokenizers/releases/download/v0.7.1/libtokenizers.darwin-arm64.tar.gz" | tar xvz
         - 
             name: Init library
             run:
-                go mod download && mv ./libtokenizers.a /go/pkg/mod/github.com/daulet/tokenizers@${VERSION}/libtokenizers.a
+                go mod download && mv ./libtokenizers.a /go/pkg/mod/github.com/daulet/tokenizers@0.7.1/libtokenizers.a
         -
             name: Run GoReleaser
             uses: goreleaser/goreleaser-action@v5
