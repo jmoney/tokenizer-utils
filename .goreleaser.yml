@@ -5,7 +5,7 @@ builds:
     id: tokenizer
     main: ./cmd/cli/main.go
     ldflags:
-      - '-extldflags "-static"'
+      - '-s -extldflags "-static"'
 
     env:
         - CGO_ENABLED=1
