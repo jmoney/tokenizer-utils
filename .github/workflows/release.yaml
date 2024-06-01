@@ -16,19 +16,23 @@ jobs:
             with:
                 fetch-depth: 0
         -
+            name: OSXCross for CGO Support
+            run: |
+                mkdir ../../osxcross
+                git clone https://github.com/plentico/osxcross-target.git ../../osxcross/target
+
+        -
             name: Set up Go
             uses: actions/setup-go@v4
             with:
                 go-version: 1.22.3
 
-        -
-            name: Download libtokenizers
-            run:
-                curl -fsSL "https://github.com/daulet/tokenizers/releases/download/v0.7.1/libtokenizers.darwin-arm64.tar.gz" | tar xvz
         - 
             name: Init library
-            run:
-                go mod download && sudo mv ./libtokenizers.a $(go env GOPATH)/pkg/mod/github.com/daulet/tokenizers@v0.7.1/libtokenizers.a
+            run: |
+                go mod download 
+                curl -fsSL "https://github.com/daulet/tokenizers/releases/download/v0.7.1/libtokenizers.darwin-arm64.tar.gz" | tar xvz
+                sudo mv ./libtokenizers.a $(go env GOPATH)/pkg/mod/github.com/daulet/tokenizers@v0.7.1/libtokenizers.a
         -
             name: Run GoReleaser
             uses: goreleaser/goreleaser-action@v5
