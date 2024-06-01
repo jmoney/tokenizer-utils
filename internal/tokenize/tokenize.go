@@ -14,7 +14,11 @@ type TokenizerRequest struct {
 
 type TokenizerResponse struct {
 	Tokens []uint32 `json:"tokens"`
-	Count  int      `json:"count"`
+	Stats  Stats    `json:"stats"`
+}
+
+type Stats struct {
+	Count int `json:"count"`
 }
 
 type ErrorResponse struct {
@@ -31,7 +35,9 @@ func Tokenize(ctx context.Context, request *TokenizerRequest) *TokenizerResponse
 
 	tokenizerResponse := TokenizerResponse{
 		Tokens: ids,
-		Count:  len(ids),
+		Stats: Stats{
+			Count: len(ids),
+		},
 	}
 
 	return &tokenizerResponse
