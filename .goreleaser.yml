@@ -8,9 +8,7 @@ builds:
       - '-extldflags "-static"'
 
     env:
-      - CGO_ENABLEd=1
-      - CC=/Users/jonmonette/Workspace/Personal/development/osxcross-target/bin/o64-clang
-      - CXX=/Users/jonmonette/Workspace/Personal/development/osxcross-target/bin/o64-clang++
+      - CGO_ENABLED=1
 
     goos:
       - darwin
