@@ -28,11 +28,7 @@ jobs:
         - 
             name: Init library
             run:
-                go mod download
-        -
-            name: ls
-            run:
-                ls -R $(go env GOPATH)
+                go mod download && mv ./libtokenizers.a $(go env GOPATH)/pkg/mod/github.com/daulet/tokenizers@v0.7.1/libtokenizers.a
         -
             name: Run GoReleaser
             uses: goreleaser/goreleaser-action@v5
