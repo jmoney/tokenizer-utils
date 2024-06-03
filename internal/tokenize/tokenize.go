@@ -13,8 +13,9 @@ type TokenizerRequest struct {
 }
 
 type TokenizerResponse struct {
-	Tokens []uint32 `json:"tokens"`
-	Stats  Stats    `json:"stats"`
+	TokenIds []uint32 `json:"token_ids"`
+	Tokens   []string `json:"tokens"`
+	Stats    Stats    `json:"stats"`
 }
 
 type Stats struct {
@@ -31,12 +32,13 @@ type ErrorResponse struct {
 
 func Tokenize(ctx context.Context, request *TokenizerRequest) *TokenizerResponse {
 	tk := ctx.Value(ContextKey("tokenizer")).(*tokenizers.Tokenizer)
-	ids, _ := tk.Encode(request.Prompt, true)
+	ids, tokens := tk.Encode(request.Prompt, true)
 
 	tokenizerResponse := TokenizerResponse{
-		Tokens: ids,
+		TokenIds: ids,
+		Tokens:   tokens,
 		Stats: Stats{
-			Count: len(ids),
+			Count: len(tokens),
 		},
 	}
 
