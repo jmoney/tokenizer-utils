@@ -4,14 +4,14 @@ builds:
   -
     id: tokenizer
     main: ./cmd/cli/main.go
-    ldflags:
-      - '-s -extldflags "-static"'
-
+    binary: tokenizer
     env:
-        - CGO_ENABLED=1
-        - CC=/home/runner/work/osxcross/target/bin/o64-clang
-        - CXX=/home/runner/work/osxcross/target/bin/o64-clang++
-
+      - CC=o64-clang
+      - CXX=o64-clang++
+    flags:
+      - -mod=readonly
+    ldflags:
+      - -s -w -X main.version={{.Version}}
     goos:
       - darwin
     goarch:
@@ -22,19 +22,6 @@ archives:
     id: archive
     builds:
       - tokenizer
-
-checksum:
-  name_template: 'checksums.txt'
-
-snapshot:
-  name_template: "{{ incpatch .Version }}-next"
-
-changelog:
-  sort: asc
-  filters:
-    exclude:
-      - '^docs:'
-      - '^test:'
 brews:
   -
     name: "tokenizer@{{ .Tag }}"
