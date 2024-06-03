@@ -33,11 +33,11 @@ jobs:
             with:
                 registry: ghcr.io
                 username: ${{ github.actor }}
-                password: ${{ secrets.GITHUB_TOKEN }}
+                password: ${{ secrets.GH_TOKEN }}
 
         - name: Release
           run: |
-            docker run --rm -e CGO_ENABLED=1 \
+            docker run --rm -e CGO_ENABLED=1 -e GITHUB_TOKEN=${{ secrets.GH_TOKEN }}\
                 -v /var/run/docker.sock:/var/run/docker.sock \
                 -v "$(go env GOMODCACHE):/root/go/pkg/mod" \
                 -v `pwd`:/go/src/tokenizer-utils \
