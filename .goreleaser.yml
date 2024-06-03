@@ -65,6 +65,56 @@ brews:
   -
     name: "tokenizer"
 
+    repository:
+      owner: jmoney
+      name: homebrew-ai-utils
+
+      branch: main
+
+      token: "{{ .Env.GITHUB_TOKEN }}"
+    
+    ids:
+      - archive-cli-darwin-arm64
+
+    # Git author used to commit to the repository.
+    # Defaults are shown.
+    commit_author:
+      name: goreleaserbot
+      email: noreply@gmail.com
+
+    commit_msg_template: "Brew formula update for tokenizer version {{ .Tag }}"
+
+    directory: Formula
+
+    homepage: "https://jmoney.dev/tokenizer-utils"
+
+    description: "CLI for tokenizing text from stdin"
+
+    # SPDX identifier of your app's license.
+    # Default is empty.
+    license: "Apache 2.0"
+
+    # Setting this will prevent goreleaser to actually try to commit the updated
+    # formula - instead, the formula file will be stored on the dist folder only,
+    # leaving the responsibility of publishing it to the user.
+    # If set to auto, the release will not be uploaded to the homebrew tap
+    # in case there is an indicator for prerelease in the tag e.g. v1.0.0-rc1
+    # Default is false.
+    #    skip_upload: true
+
+    # So you can `brew test` your formula.
+    # Default is empty.
+    test: |
+      system "#{bin}/tokenizer -h"
+
+    # Custom install script for brew.
+    # Default is 'bin.install "program"'.
+    install: |
+      bin.install "tokenizer"
+
+  -
+    name: "tokenizer@{{ .Tag }}"
+
     alternative_names:
       - "tokenizer@{{ .Tag }}"
 
