@@ -26,7 +26,7 @@ brews:
   -
     name: "tokenizer@{{ .Tag }}"
 
-    tap:
+    repository:
       owner: jmoney
       name: homebrew-ai-utils
 
@@ -42,7 +42,7 @@ brews:
 
     commit_msg_template: "Brew formula update for tokenizer version {{ .Tag }}"
 
-    folder: Formula
+    directory: Formula
 
     homepage: "https://jmoney.dev/tokenizer-utils"
 
@@ -72,7 +72,7 @@ brews:
   -
     name: "tokenizer"
 
-    tap:
+    repository:
       owner: jmoney
       name: homebrew-ai-utils
 
@@ -88,7 +88,7 @@ brews:
 
     commit_msg_template: "Brew formula update for tokenizer version {{ .Tag }}"
 
-    folder: Formula
+    directory: Formula
 
     homepage: "https://jmoney.dev/tokenizer-utils"
 
