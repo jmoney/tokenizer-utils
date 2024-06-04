@@ -9,7 +9,6 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"github.com/google/uuid"
 	"github.com/jmoney/tokenizer-server/internal/tokenize"
 	"github.com/jmoney/tokenizers"
 )
@@ -36,21 +35,15 @@ func main() {
 
 func handleRequest(ctx context.Context, request events.ALBTargetGroupRequest) (events.ALBTargetGroupResponse, error) {
 
-	requestID, err := uuid.Parse(request.Headers["X-Request-ID"])
-	if err != nil {
-		id := uuid.New()
-		wlog.Printf("Error parsing request ID \"%s\".  Using \"%s\"\n", request.Headers["X-Request-ID"], id.String())
-		requestID = id
-	} else {
-		ilog.Printf("Request ID: %s\n", requestID.String())
-	}
+	requestID := request.Headers["X-Request-ID"]
+	ilog.Printf("Request ID: %s\n")
 
 	tokenizerRequest := tokenize.TokenizerRequest{}
-	err = json.Unmarshal([]byte(request.Body), &tokenizerRequest)
+	err := json.Unmarshal([]byte(request.Body), &tokenizerRequest)
 	if err != nil {
 		wlog.Printf("Error unmarshalling request body: %s\n", err)
 		errorResponse := tokenize.ErrorResponse{
-			ID:      requestID.String(),
+			ID:      requestID,
 			Message: "Error unmarshalling request body",
 			Object:  "error",
 			Type:    "invalid_request",

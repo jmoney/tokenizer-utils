@@ -21,8 +21,8 @@ builds:
     main: ./cmd/lambda/main.go
     binary: bootstrap
     env:
-      - CC=o64-clang
-      - CXX=o64-clang++
+      - CC=aarch64-linux-gnu-gcc	
+      - CXX=aarch64-linux-gnu-g++
     flags:
       - -mod=readonly
     ldflags:
@@ -36,8 +36,8 @@ builds:
     main: ./cmd/server/main.go
     binary: http
     env:
-      - CC=o64-clang
-      - CXX=o64-clang++
+      - CC=aarch64-linux-gnu-gcc	
+      - CXX=aarch64-linux-gnu-g++
     flags:
       - -mod=readonly
     ldflags:
@@ -52,14 +52,19 @@ archives:
     id: archive-cli-darwin-arm64
     builds:
       - tokenizer-cli-darwin-arm64
+
+    name_template: "tokenizer_cli_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
   -
     id: archive-lambda-linux-arm64
     builds:
       - tokenizer-lambda-linux-arm64
+    name_template: "tokenizer_lambda_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
   -
     id: archive-http-linux-arm64
     builds:
       - tokenizer-http-linux-arm64
+    name_template: "tokenizer_http_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 brews:
   -
     name: "tokenizer"
