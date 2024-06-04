@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/google/uuid"
 	"github.com/jmoney/tokenizer-server/internal/tokenize"
 	"github.com/jmoney/tokenizers"
 )
@@ -45,13 +46,19 @@ func addTokenizerToContext(tk *tokenizers.Tokenizer, next http.Handler) http.Han
 }
 
 func handleRequset(w http.ResponseWriter, req *http.Request) {
-	requestID := req.Header.Get("X-Request-ID")
-	ilog.Printf("Request ID: %s\n", requestID)
+	requestID, err := uuid.Parse(req.Header.Get("X-Request-ID"))
+	if err != nil {
+		id := uuid.New()
+		wlog.Printf("Error parsing request ID \"%s\".  Using \"%s\"\n", req.Header.Get("X-Request-ID"), id.String())
+		requestID = id
+	} else {
+		ilog.Printf("Request ID: %s\n", requestID.String())
+	}
 
 	if req.Method != "POST" {
-		wlog.Printf("requestID=%s, Method %s not allowed\n", requestID, req.Method)
+		wlog.Printf("requestID=%s, Method %s not allowed\n", requestID.String(), req.Method)
 		errorResponse := tokenize.ErrorResponse{
-			ID:      requestID,
+			ID:      requestID.String(),
 			Message: "Http Method Not Allowd",
 			Object:  "error",
 			Type:    "invalid_request",
@@ -67,9 +74,9 @@ func handleRequset(w http.ResponseWriter, req *http.Request) {
 	tokenizeRequest := tokenize.TokenizerRequest{}
 	body, err := io.ReadAll(req.Body)
 	if err != nil {
-		elog.Printf("requestID=%s, %s\n", requestID, err)
+		elog.Printf("requestID=%s, %s\n", requestID.String(), err)
 		errorResponse := tokenize.ErrorResponse{
-			ID:      requestID,
+			ID:      requestID.String(),
 			Message: "Internal Server Error",
 			Object:  "error",
 			Type:    "internal_error",
@@ -84,9 +91,9 @@ func handleRequset(w http.ResponseWriter, req *http.Request) {
 	defer req.Body.Close()
 	err = json.Unmarshal(body, &tokenizeRequest)
 	if err != nil {
-		elog.Printf("requestID=%s, %s\n", requestID, err)
+		elog.Printf("requestID=%s, %s\n", requestID.String(), err)
 		errorResponse := tokenize.ErrorResponse{
-			ID:      requestID,
+			ID:      requestID.String(),
 			Message: "Internal Server Error",
 			Object:  "error",
 			Type:    "internal_error",
