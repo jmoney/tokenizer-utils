@@ -77,7 +77,6 @@ dockers:
     image_templates:
       - "ghcr.io/jmoney/tokenizer-lambda:latest"
       - "ghcr.io/jmoney/tokenizer-lambda:{{ .Tag }}"
-    push: true
 
   -
     id: server-linux-arm64
@@ -89,7 +88,6 @@ dockers:
     image_templates:
       - "ghcr.io/jmoney/tokenizer-server:latest"
       - "ghcr.io/jmoney/tokenizer-server:{{ .Tag }}"
-    push: true
 
 brews:
   -

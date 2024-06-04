@@ -1,4 +1,6 @@
 FROM ubuntu:24.04
+LABEL org.opencontainers.image.source=https://github.com/jmoney/tokenizer-utils
+
 COPY server /
 ENV PORT=8080
 ENTRYPOINT ["/server"]
