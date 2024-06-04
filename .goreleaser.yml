@@ -11,7 +11,7 @@ builds:
     flags:
       - -mod=readonly
     ldflags:
-      - -s -w -X main.version={{.Version}}
+      - -extldflags '-L./lib' -s -w -X main.version={{.Version}}
     goos:
       - darwin
     goarch:

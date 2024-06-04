@@ -1,16 +1,17 @@
 FROM golang:1.22 AS builder
 
 ARG TARGETPLATFORM
-ARG VERSION=v0.7.1
+ARG VERSION=v0.7.5
 
 WORKDIR /workspace
-RUN curl -fsSL https://github.com/daulet/tokenizers/releases/download/${VERSION}/libtokenizers.$(echo ${TARGETPLATFORM} | tr / -).tar.gz | tar xvz
+RUN curl -fsSL https://github.com/jmoney/tokenizers/releases/download/${VERSION}/libtokenizers.$(echo ${TARGETPLATFORM} | tr / -).tar.gz | tar xvz
 COPY go.mod go.sum cmd/server/main.go ./
 COPY internal ./internal
 RUN go mod download
-RUN mv ./libtokenizers.a /go/pkg/mod/github.com/daulet/tokenizers@${VERSION}/libtokenizers.a
-RUN go build -ldflags '-extldflags "-static"' -tags lambda.norpc -o lambda .
-RUN go build -ldflags '-extldflags "-static"' -o http .
+RUN mkdir -p ./lib
+RUN mv ./libtokenizers.a ./lib
+RUN go build -ldflags '-extldflags "-L./lib -static"' -tags lambda.norpc -o lambda .
+RUN go build -ldflags '-extldflags "-L./lib -static"' -o http .
 
 FROM alpine:3.14 AS tokenizer-server
 COPY --from=builder /workspace/lambda ./lambda
