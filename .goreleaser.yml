@@ -16,12 +16,50 @@ builds:
       - darwin
     goarch:
       - arm64
+  -
+    id: tokenizer-lambda-linux-arm64
+    main: ./cmd/lambda/main.go
+    binary: bootstrap
+    env:
+      - CC=o64-clang
+      - CXX=o64-clang++
+    flags:
+      - -mod=readonly
+    ldflags:
+      - -extldflags '-L./lib/linux/arm64' -s -w -X main.version={{.Version}}
+    goos:
+      - linux
+    goarch:
+      - arm64
+  -
+    id: tokenizer-http-linux-arm64
+    main: ./cmd/server/main.go
+    binary: http
+    env:
+      - CC=o64-clang
+      - CXX=o64-clang++
+    flags:
+      - -mod=readonly
+    ldflags:
+      - -extldflags '-L./lib/linux/arm64' -s -w -X main.version={{.Version}}
+    goos:
+      - linux
+    goarch:
+      - arm64
 
 archives:
   -
     id: archive-cli-darwin-arm64
     builds:
       - tokenizer-cli-darwin-arm64
+  -
+    id: archive-lambda-linux-arm64
+    builds:
+      - tokenizer-lambda-linux-arm64
+  -
+    id: archive-http-linux-arm64
+    builds:
+      - tokenizer-http-linux-arm64
 brews:
   -
     name: "tokenizer"
