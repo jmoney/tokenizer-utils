@@ -32,9 +32,9 @@ builds:
     goarch:
       - arm64
   -
-    id: tokenizer-http-linux-arm64
+    id: tokenizer-server-linux-arm64
     main: ./cmd/server/main.go
-    binary: http
+    binary: server
     env:
       - CC=aarch64-linux-gnu-gcc	
       - CXX=aarch64-linux-gnu-g++
@@ -61,10 +61,34 @@ archives:
       - tokenizer-lambda-linux-arm64
     name_template: "tokenizer_lambda_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
   -
-    id: archive-http-linux-arm64
+    id: archive-server-linux-arm64
     builds:
-      - tokenizer-http-linux-arm64
-    name_template: "tokenizer_http_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+      - tokenizer-server-linux-arm64
+    name_template: "tokenizer_server_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+dockers:
+  -
+    id: lambda-linux-arm64
+    goos: linux
+    goarch: arm64
+    ids:
+      - tokenizer-lambda-linux-arm64
+    dockerfile: ./Dockerfile.lambda
+    image_templates:
+      - "ghcr.io/jmoney/tokenizer-lambda:latest"
+      - "ghcr.io/jmoney/tokenizer-lambda:{{ .Tag }}"
+
+  -
+    id: server-linux-arm64
+    goos: linux
+    goarch: arm64
+    ids:
+      - tokenizer-server-linux-arm64
+    dockerfile: ./Dockerfile.server
+    image_templates:
+      - "ghcr.io/jmoney/tokenizer-server:latest"
+      - "ghcr.io/jmoney/tokenizer-server:{{ .Tag }}"
+
 brews:
   -
     name: "tokenizer"
