@@ -24,9 +24,14 @@ jobs:
         - 
             name: Init library
             run: |
-                go mod download 
-                curl -fsSL "https://github.com/daulet/tokenizers/releases/download/v0.7.1/libtokenizers.darwin-arm64.tar.gz" | tar xvz
-                sudo mv ./libtokenizers.a $(go env GOMODCACHE)/github.com/daulet/tokenizers@v0.7.1/libtokenizers.a
+                go mod download
+                sudo mkdir -p $(go env GOMODCACHE)/github.com/jmoney/tokenizers@v0.7.3/lib
+
+                curl -fsSL "https://github.com/jmoney/tokenizers/releases/download/v0.7.3/libtokenizers.darwin-arm64.tar.gz" | tar xvz
+                sudo mv ./libtokenizers.a $(go env GOMODCACHE)/github.com/jmoney/tokenizers@v0.7.3/lib/darwin/libtokenizers-darwin-arm64.a
+
+                curl -fsSL "https://github.com/jmoney/tokenizers/releases/download/v0.7.3/libtokenizers.linux-arm64.tar.gz" | tar xvz
+                sudo mv ./libtokenizers.a $(go env GOMODCACHE)/github.com/jmoney/tokenizers@v0.7.3/lib/libtokenizers-linux-arm64.a
         -
             name: Login to Docker
             uses: docker/login-action@v3

@@ -13,8 +13,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/daulet/tokenizers"
 	"github.com/jmoney/tokenizer-server/internal/tokenize"
+	"github.com/jmoney/tokenizers"
 )
 
 var (
