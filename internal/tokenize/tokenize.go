@@ -9,7 +9,8 @@ import (
 type ContextKey string
 
 type TokenizerRequest struct {
-	Prompt string `json:"prompt"`
+	Prompt           string `json:"prompt"`
+	AddSpecialtokens *bool  `json:"add_special_tokens"`
 }
 
 type TokenizerResponse struct {
@@ -32,7 +33,7 @@ type ErrorResponse struct {
 
 func Tokenize(ctx context.Context, request *TokenizerRequest) *TokenizerResponse {
 	tk := ctx.Value(ContextKey("tokenizer")).(*tokenizers.Tokenizer)
-	ids, tokens := tk.Encode(request.Prompt, true)
+	ids, tokens := tk.Encode(request.Prompt, defaultBoolIfNil(request.AddSpecialtokens, false))
 
 	tokenizerResponse := TokenizerResponse{
 		TokenIds: ids,
@@ -43,4 +44,11 @@ func Tokenize(ctx context.Context, request *TokenizerRequest) *TokenizerResponse
 	}
 
 	return &tokenizerResponse
+}
+
+func defaultBoolIfNil(b *bool, d bool) bool {
+	if b == nil {
+		return d
+	}
+	return *b
 }

@@ -20,7 +20,8 @@ import (
 var (
 	elog = log.New(os.Stderr, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
-	model = flag.String("model", os.Getenv("MODEL"), "The path to the model")
+	model              = flag.String("model", os.Getenv("MODEL"), "The path to the model")
+	add_special_tokens = flag.Bool("add_special_tokens", false, "Add special tokens")
 
 	huggingFaceToken = os.Getenv("HF_TOKEN")
 )
@@ -86,7 +87,8 @@ func main() {
 	str := string(stdin)
 	prompt := strings.TrimSuffix(str, "\n")
 	tokenizerRequest := tokenize.TokenizerRequest{
-		Prompt: prompt,
+		Prompt:           prompt,
+		AddSpecialtokens: add_special_tokens,
 	}
 	tokenizerResponse := tokenize.Tokenize(context.WithValue(context.Background(), tokenize.ContextKey("tokenizer"), tk), &tokenizerRequest)
 	resp, _ := json.Marshal(*tokenizerResponse)
