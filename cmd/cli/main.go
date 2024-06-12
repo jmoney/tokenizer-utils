@@ -58,10 +58,6 @@ func main() {
 				elog.Fatal(string(body))
 			}
 
-			home := os.Getenv("HOME")
-			modelPath = strings.ToLower(modelPath)
-			modelPath = fmt.Sprintf("%s/.tokenizers/%s", home, modelPath)
-			tokenizerPath = fmt.Sprintf("%s/tokenizer.json", modelPath)
 			err = os.MkdirAll(modelPath, 0755)
 			if err != nil {
 				elog.Fatalln(err)
