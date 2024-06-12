@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 
 	"github.com/daulet/tokenizers"
@@ -21,7 +22,7 @@ var (
 	elog = log.New(os.Stderr, "[ERROR] ", log.Ldate|log.Ltime|log.Lshortfile)
 
 	model              = flag.String("model", os.Getenv("MODEL"), "The path to the model")
-	add_special_tokens = flag.Bool("add_special_tokens", false, "Add special tokens")
+	add_special_tokens = flag.Bool("add_special_tokens", must(strconv.ParseBool(os.Getenv("ADD_SPECIAL_TOKENS"))), "Add special tokens")
 
 	huggingFaceToken = os.Getenv("HF_TOKEN")
 )
@@ -62,7 +63,7 @@ func main() {
 			if err != nil {
 				elog.Fatalln(err)
 			}
-			err = os.WriteFile(tokenizerPath, body, 0644)
+			err = os.WriteFile(filepath.Clean(tokenizerPath), body, 0644)
 			if err != nil {
 				elog.Fatalln(err)
 			}
@@ -89,4 +90,12 @@ func main() {
 	tokenizerResponse := tokenize.Tokenize(context.WithValue(context.Background(), tokenize.ContextKey("tokenizer"), tk), &tokenizerRequest)
 	resp, _ := json.Marshal(*tokenizerResponse)
 	fmt.Printf("%s\n", string(resp))
+}
+
+func must[T any](b T, err error) T {
+	if err != nil {
+		elog.Fatal(err)
+	}
+
+	return b
 }
