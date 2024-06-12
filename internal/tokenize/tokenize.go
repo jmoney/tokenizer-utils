@@ -3,7 +3,7 @@ package tokenize
 import (
 	"context"
 
-	"github.com/jmoney/tokenizers"
+	"github.com/daulet/tokenizers"
 )
 
 type ContextKey string

@@ -9,9 +9,9 @@ import (
 
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
+	"github.com/daulet/tokenizers"
 	"github.com/google/uuid"
 	"github.com/jmoney/tokenizer-server/internal/tokenize"
-	"github.com/jmoney/tokenizers"
 )
 
 var (

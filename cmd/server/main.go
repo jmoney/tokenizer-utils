@@ -10,9 +10,9 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/daulet/tokenizers"
 	"github.com/google/uuid"
 	"github.com/jmoney/tokenizer-server/internal/tokenize"
-	"github.com/jmoney/tokenizers"
 )
 
 var (
